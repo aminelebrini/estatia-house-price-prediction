@@ -1,7 +1,10 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 class DataCleaner:
     def __init__(self):
-        self.data = []
+        
         self.continuous_cols = []
+        self.scaler = StandardScaler()
 
 
     def clean_data(self, data_description, data_house_prices):
@@ -59,3 +62,36 @@ class DataCleaner:
         self.continuous_cols = continuous_cols
 
         return data_description, df
+
+    def x_y_separation(self, df):
+
+        best_features_x = [
+            'GrLivArea', '1stFlrSF', '2ndFlrSF', 'TotalBsmtSF', 'LotArea',
+    
+            'OverallQual', 'OverallCond', 'ExterQual', 'Functional',
+    
+            'Neighborhood', 'MSZoning', 'HouseStyle', 'Foundation',
+    
+            'YearBuilt', 'YearRemodAdd',
+    
+            'FullBath', 'HalfBath', 'BsmtFullBath', 'BedroomAbvGr', 'TotRmsAbvGrd', 'KitchenAbvGr',
+    
+            'GarageCars', 'GarageArea', 'GarageType', 'GarageFinish', 'MasVnrArea'
+        ]
+        x = df.drop(['Id', 'SalePrice'], axis=1)
+        categorical_cols = x.select_dtypes(include=['object']).columns
+        if len(categorical_cols) > 0:
+            x = pd.get_dummies(x, columns=categorical_cols, drop_first=True)
+        y = df['SalePrice']
+
+        self.X_train = x
+        self.Y_train = y
+
+    def standarisation_normalisation(self, X_train, X_test):
+        X_train_scaled = X_train.copy()
+        X_test_scaled = X_test.copy()
+        for col in self.continuous_cols:
+            if col in X_train_scaled.columns:
+                X_train_scaled[col] = self.scaler.fit_transform(X_train_scaled[[col]])
+
+        return X_train_scaled, X_test_scaled

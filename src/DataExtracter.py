@@ -3,8 +3,7 @@ from pathlib import Path
 from DataCleaner import DataCleaner
 class DataExtracter:
     def __init__(self):
-        self.data_cleaner = DataCleaner()
-
+        pass
     def get_data(self):
         BASE_DIR = Path(__file__).resolve().parent.parent
         data_description_path = BASE_DIR / 'data' / 'bronze' / 'data_description.txt'
@@ -18,12 +17,14 @@ class DataExtracter:
 
             # print(data_house_prices)
             
-            return self.data_cleaner.clean_data(data_description, data_house_prices)
+            return data_description, data_house_prices
 
         except FileNotFoundError:
             print("Error: File not found.")
+            return None, None
         except Exception as e:
             print(f"Error: {e}")
+            return None, None
 
 
 data_extracter = DataExtracter()
