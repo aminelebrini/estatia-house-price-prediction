@@ -7,7 +7,7 @@ class DataCleaner:
         self.scaler = StandardScaler()
 
 
-    def clean_data(self, data_description, data_house_prices):
+    def clean_data(self, data_house_prices):
 
         df = data_house_prices.copy()
 
@@ -36,7 +36,7 @@ class DataCleaner:
         cat_cols = df.select_dtypes(include=['object']).columns
         num_cols = df.select_dtypes(include=['int64', 'float64']).columns
         if len(cat_cols) > 0:
-            df.loc[:, cat_cols] = df[cat_cols].fillna('None')
+            df.loc[:,cat_cols] = df[cat_cols].fillna('None')
         if len(num_cols) > 0:
             df.loc[:, num_cols] = df[num_cols].fillna(0)
 
@@ -44,7 +44,7 @@ class DataCleaner:
         ordinal_cols = ['ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond', 'HeatingQC', 'KitchenQual', 'FireplaceQu', 'GarageQual', 'GarageCond']
         for col in ordinal_cols:
             if col in df.columns:
-                df.loc[:, col] = df[col].map(qual_map)
+                df.loc[col] = df[col].map(qual_map)
 
         continuous_cols = []
         all_nums_col = df.select_dtypes(include=['int64', 'float64']).columns
@@ -61,7 +61,7 @@ class DataCleaner:
 
         self.continuous_cols = continuous_cols
 
-        return data_description, df
+        return df
 
     def x_y_separation(self, df):
 
