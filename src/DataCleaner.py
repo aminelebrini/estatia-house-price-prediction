@@ -16,7 +16,7 @@ class DataCleaner:
         print(df.columns)
         print(df.head())
         print(df.describe())
-        print(df.info())
+        df.info()
         max_sales_price = df['SalePrice'].max()
         min_sales_price = df['SalePrice'].min()
         max_grlivarea = df['GrLivArea'].max()

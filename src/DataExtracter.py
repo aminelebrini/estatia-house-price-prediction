@@ -18,10 +18,20 @@ class DataExtracter:
             
             return data_house_prices
 
-        except FileNotFoundError:
-            print("Error: File not found.")
-            return None, None
+        except FileNotFoundError as error:
+            print(f"Error: File not found: {error.filename}")
+            return None
         except Exception as e:
             print(f"Error: {e}")
             return None, None
 
+    def data_extracter_file(self, data_frame_path):
+        try:
+            data_frame = pd.read_csv(data_frame_path)
+            return data_frame
+        except FileNotFoundError as error:
+            print(f"Error: File not found: {error.filename}")
+            return None
+        except Exception as e:
+            print(f"Error: {e}")
+            return None

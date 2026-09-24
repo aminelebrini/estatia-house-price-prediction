@@ -28,7 +28,14 @@ class EDA_visualisation:
 
     def box_plot(self):
         plt.figure(figsize=(9, 5))
-        sns.boxplot(data=self.df, x='OverallQual', y='SalePrice', palette='Blues')
+        sns.boxplot(
+            data=self.df,
+            x='OverallQual',
+            y='SalePrice',
+            hue='OverallQual',
+            palette='Blues',
+            legend=False,
+        )
         plt.title('OverallQual vs SalePrice')
         plt.xlabel('OverallQual')
         plt.ylabel('SalePrice')
@@ -46,7 +53,9 @@ class EDA_visualisation:
             x='Neighborhood',
             y='SalePrice',
             order=order,
+            hue='Neighborhood',
             palette='viridis',
+            legend=False,
         )
         plt.xticks(rotation=90)
         plt.title('Neighborhood vs SalePrice')
