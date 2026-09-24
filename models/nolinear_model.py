@@ -66,7 +66,11 @@ class NonLinearModel:
         return self.pipeline, X_test, y_test
 
     def evaluate_model(self, X_test: pd.DataFrame, y_test: pd.Series) -> dict:
+        if self.pipeline is None:
+            raise ValueError("Pipeline is not built. Call build_pipeline() first.")
+
         y_pred = self.pipeline.predict(X_test)
+        
         return {
             'Model': f'Polynomial Regression (Degree {self.degree})',
             'MAE': mean_absolute_error(y_test, y_pred),
