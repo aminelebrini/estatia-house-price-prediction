@@ -63,29 +63,49 @@ class DataCleaner:
 
         return df
 
-    def x_y_separation(self, df):
-
+    def x_y_separation(self, df: pd.DataFrame, use_best_features: bool = False):
         best_features_x = [
-            'GrLivArea', '1stFlrSF', '2ndFlrSF', 'TotalBsmtSF', 'LotArea',
-    
-            'OverallQual', 'OverallCond', 'ExterQual', 'Functional',
-    
-            'Neighborhood', 'MSZoning', 'HouseStyle', 'Foundation',
-    
-            'YearBuilt', 'YearRemodAdd',
-    
-            'FullBath', 'HalfBath', 'BsmtFullBath', 'BedroomAbvGr', 'TotRmsAbvGrd', 'KitchenAbvGr',
-    
-            'GarageCars', 'GarageArea', 'GarageType', 'GarageFinish', 'MasVnrArea'
+            'GrLivArea',
+            '1stFlrSF',
+            '2ndFlrSF',
+            'TotalBsmtSF',
+            'LotArea',
+            'OverallQual',
+            'OverallCond',
+            'ExterQual',
+            'Functional',
+            'Neighborhood',
+            'MSZoning',
+            'HouseStyle',
+            'Foundation',
+            'YearBuilt',
+            'YearRemodAdd',
+            'FullBath',
+            'HalfBath',
+            'BsmtFullBath',
+            'BedroomAbvGr',
+            'TotRmsAbvGrd',
+            'KitchenAbvGr',
+            'GarageCars',
+            'GarageArea',
+            'GarageType',
+            'GarageFinish',
+            'MasVnrArea',
         ]
-        x = df.drop(['Id', 'SalePrice'], axis=1)
-        categorical_cols = x.select_dtypes(include=['object']).columns
-        if len(categorical_cols) > 0:
-            x = pd.get_dummies(x, columns=categorical_cols, drop_first=True)
-        y = df['SalePrice']
 
-        self.X_train = x
-        self.Y_train = y
+        if use_best_features:
+            selected = [col for col in best_features_x if col in df.columns]
+            x = df[selected].copy()
+        else:
+            x = df.drop(columns=['Id', 'SalePrice'], errors='ignore')
+
+        cat_cols = x.select_dtypes(include=['object']).columns
+        if len(cat_cols) > 0:
+            x = pd.get_dummies(x, columns=cat_cols, drop_first=True)
+
+        y = df['SalePrice'] if 'SalePrice' in df.columns else None
+
+        return x, y
 
     def standarisation_normalisation(self, X_train, X_test):
         X_train_scaled = X_train.copy()
