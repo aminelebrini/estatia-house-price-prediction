@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
@@ -70,10 +71,15 @@ class NonLinearModel:
             raise ValueError("Pipeline is not built. Call build_pipeline() first.")
 
         y_pred = self.pipeline.predict(X_test)
-        
+
+        mae = mean_absolute_error(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        rmse = math.sqrt(mse)
+        r2 = r2_score(y_test, y_pred)
         return {
             'Model': f'Polynomial Regression (Degree {self.degree})',
-            'MAE': mean_absolute_error(y_test, y_pred),
-            'RMSE': mean_squared_error(y_test, y_pred, squared=False),
-            'R2': r2_score(y_test, y_pred),
+            'MAE': mae,
+            'MSE': mse,
+            'RMSE': rmse,
+            'R2': r2,
         }

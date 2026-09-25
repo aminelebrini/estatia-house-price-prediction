@@ -14,6 +14,8 @@ class DataExtracter:
             
             data_house_prices = pd.read_csv(data_house_prices_path)
 
+            data_house_prices = data_house_prices.iloc[:1450]
+
             # print(data_house_prices)
             
             return data_house_prices
