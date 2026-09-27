@@ -1,35 +1,56 @@
-# Estatia House Price Prediction
+# ESTATIA
 
-Application de prédiction du prix des maisons avec Python, scikit-learn et Streamlit.
-Le projet nettoie les données immobilières, crée des variables utiles, compare plusieurs modèles et expose le meilleur pipeline via une interface web.
+### House prices, turned into a decision.
 
-## Fonctionnalités
+Estatia transforme un catalogue immobilier brut en estimation exploitable : nettoyage, enrichissement, comparaison de modèles et interface de prédiction. Le projet est pensé comme une petite chaîne de production ML, de la donnée `Bronze` au prix estimé affiché dans Streamlit.
 
-- Nettoyage des données et traitement des valeurs manquantes et aberrantes
-- Génération des données Silver et Gold
-- Création de variables pour l'entraînement
-- Comparaison des modèles Linear, Non-Linear et Random Forest
-- Optimisation des hyperparamètres par validation croisée
-- Sauvegarde du meilleur pipeline avec Joblib
-- Application Streamlit pour estimer le prix d'un logement
-- Visualisation de la prédiction sur la distribution des prix
+<p align="center">
+	<strong>BRONZE</strong> &nbsp;→&nbsp; <strong>SILVER</strong> &nbsp;→&nbsp; <strong>GOLD</strong> &nbsp;→&nbsp; <strong>MODEL</strong> &nbsp;→&nbsp; <strong>ESTIMATION</strong>
+</p>
 
-## Structure du projet
+---
 
-```text
-data/bronze/    Données sources
-data/silver/    Données nettoyées
-data/gold/      Données transformées pour le modèle
-src/            Extraction, nettoyage et chargement des données
-features/       Création des variables
-models/         Modèles et pipeline sauvegardé
-evaluation/     Évaluation et optimisation des modèles
-dashboard/      Interface Streamlit
+## Le projet en un regard
+
+| Couche | Rôle | Sortie |
+|:--|:--|:--|
+| `Bronze` | Données originales des ventes | `House_Prices.csv` |
+| `Silver` | Données nettoyées et contrôlées | `House_Prices_Silver.csv` |
+| `Gold` | Variables prêtes pour l'apprentissage | `House_Prices_Gold.csv` |
+| `Model` | Meilleur pipeline sélectionné | `house_price_model.joblib` |
+| `Dashboard` | Formulaire et visualisation du prix | Streamlit |
+
+```mermaid
+flowchart LR
+		A[data/bronze<br/>House_Prices.csv] --> B[Extraction & nettoyage]
+		B --> C[data/silver<br/>données propres]
+		C --> D[Feature engineering]
+		D --> E[data/gold<br/>variables modèle]
+		E --> F{Comparaison}
+		F --> G[Linear]
+		F --> H[Non-Linear]
+		F --> I[Random Forest]
+		G --> J[Validation croisée]
+		H --> J
+		I --> J
+		J --> K[Joblib<br/>meilleur pipeline]
+		K --> L[Dashboard Streamlit]
 ```
 
-## Installation locale
+## Ce qui se passe sous le capot
 
-Python 3.11 ou une version compatible est recommandé.
+- Nettoyage des doublons, valeurs manquantes et observations aberrantes.
+- Création des données `Silver` puis `Gold` avec des variables exploitables.
+- Encodage des variables catégorielles et préparation des variables numériques dans des pipelines scikit-learn.
+- Comparaison de trois familles de modèles : régression linéaire, modèle non linéaire et Random Forest.
+- Recherche d'hyperparamètres par validation croisée, puis sauvegarde du meilleur pipeline.
+- Estimation interactive et positionnement du prix prédit sur la distribution du marché.
+
+## Démarrage express
+
+### 1. Installer
+
+Python 3.11 est recommandé.
 
 ```bash
 python -m venv .venv
@@ -37,7 +58,7 @@ source .venv/bin/activate
 pip install streamlit joblib matplotlib numpy pandas rich scikit-learn seaborn
 ```
 
-## Préparer les données et entraîner le modèle
+### 2. Construire les données et le modèle
 
 Depuis la racine du projet :
 
@@ -45,41 +66,67 @@ Depuis la racine du projet :
 python main.py
 ```
 
-Cette commande lit `data/bronze/House_Prices.csv`, génère les fichiers Silver et Gold, compare les modèles et sauvegarde le meilleur pipeline dans `models/house_price_model.joblib`.
+La commande lit les données Bronze, écrit les couches Silver et Gold, évalue les modèles et génère `models/house_price_model.joblib`.
 
-## Lancer le dashboard
-
-Le fichier du modèle doit être présent avant le démarrage de l'application.
+### 3. Ouvrir l'application
 
 ```bash
 streamlit run dashboard/app.py
 ```
 
-L'application est ensuite accessible à l'adresse [http://localhost:8501](http://localhost:8501).
+Puis ouvrir [localhost:8501](http://localhost:8501). Renseignez les caractéristiques du logement et lancez l'estimation.
 
-## Lancer avec Docker Compose
+## Option Docker
+
+Pour lancer l'expérience complète dans un conteneur :
 
 ```bash
 docker compose up --build
 ```
 
-Le dashboard est disponible sur [http://localhost:8501](http://localhost:8501). Pour utiliser un autre port local :
+Le port local peut être changé sans modifier le projet :
 
 ```bash
 APP_PORT=8502 docker compose up --build
 ```
 
-Pour arrêter le service :
+Arrêt du service :
 
 ```bash
 docker compose down
 ```
 
-## Données et modèle
+## Architecture
 
-- Source : `data/bronze/House_Prices.csv`
-- Données nettoyées : `data/silver/House_Prices_Silver.csv`
-- Données transformées : `data/gold/House_Prices_Gold.csv`
-- Pipeline entraîné : `models/house_price_model.joblib`
+```text
+.
+├── data/
+│   ├── bronze/       Source et dictionnaire des données
+│   ├── silver/       Données nettoyées
+│   └── gold/         Données enrichies pour le modèle
+├── src/              Extraction, nettoyage et chargement
+├── features/         Création des variables
+├── models/           Pipelines Linear, Non-Linear et Tree
+├── evaluation/       Comparaison et optimisation
+├── dashboard/        Interface Streamlit
+├── notebooks/        Exploration et visualisations
+└── main.py           Orchestration du pipeline
+```
 
-Le modèle enregistré contient les transformations nécessaires aux variables numériques et catégorielles. Le formulaire Streamlit utilise les colonnes des données Gold pour construire une prédiction.
+## Artefacts principaux
+
+| Fichier | Utilité |
+|:--|:--|
+| `data/bronze/House_Prices.csv` | Source immobilière |
+| `data/silver/House_Prices_Silver.csv` | Données nettoyées |
+| `data/gold/House_Prices_Gold.csv` | Données préparées pour l'entraînement |
+| `models/house_price_model.joblib` | Pipeline final chargé par Streamlit |
+| `data/bronze/data_description.txt` | Description des variables |
+
+## Stack
+
+`Python` · `pandas` · `scikit-learn` · `Streamlit` · `Joblib` · `Matplotlib` · `Seaborn` · `Docker Compose`
+
+## Note de reproductibilité
+
+Le modèle chargé par le dashboard doit être généré avant son lancement. Pour repartir d'un état propre, supprimez les artefacts `Silver`, `Gold` et le fichier Joblib, puis relancez `python main.py`.
