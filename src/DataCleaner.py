@@ -38,7 +38,7 @@ class DataCleaner:
         if len(cat_cols) > 0:
             df.loc[:,cat_cols] = df[cat_cols].fillna('None')
         if len(num_cols) > 0:
-            df.loc[:, num_cols] = df[num_cols].fillna(0)
+            df.loc[:, num_cols] = df[num_cols].fillna(df[num_cols].median())
 
         qual_map = {'Ex': 5, 'Gd': 4, 'TA': 3, 'Fa': 2, 'Po': 1, 'None': 0}
         ordinal_cols = ['ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond', 'HeatingQC', 'KitchenQual', 'FireplaceQu', 'GarageQual', 'GarageCond']

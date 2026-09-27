@@ -105,9 +105,38 @@ with st.form("housing form for price detecting"):
                 ax.set_ylabel("Nombre de logements")
                 ax.legend()
 
-                ax.pyplot(fig)
+                st.pyplot(fig)
         except Exception as e:
             st.error(f"Erreur lors de la prédiction : {e}")
+
+st.markdown("""<style>
+    .powered-by {
+        margin: 0.5rem 0 1.25rem;
+        padding: 0.75rem 0.85rem;
+        color: #8f9bab;
+        background: #232323;
+        border: 1px solid #343434;
+        border-left: 3px solid #2dd4bf;
+        border-radius: 5px;
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+    }
+
+    .powered-by strong {
+        color: #d9fffb;
+        font-weight: 700;
+    }
+
+    .admin {
+        color: #d9fffb;
+        text-decoration: none;
+    }
+</style>""", unsafe_allow_html=True)
+
+st.sidebar.markdown(
+    """<div class="powered-by">Powered by <strong><a class="admin" href="https://github.com/aminelebrini" target="_blank">AMINE LEBRINI</a></strong></div>""",
+    unsafe_allow_html=True,
+)
 
 st.sidebar.header("ℹ️ À propos")
 st.sidebar.info(

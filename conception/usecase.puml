@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+
+actor "Developer" as Dev
+actor "User" as User
+
+rectangle "House Price Prediction System" {
+
+    ' Developer
+    usecase "Préparer les données" as UC1
+    usecase "Explorer les données" as UC2
+    usecase "Créer les features" as UC3
+    usecase "Entraîner les modèles" as UC4
+    usecase "Valider les modèles" as UC5
+    usecase "Optimiser les modèles" as UC6
+    usecase "Évaluer les modèles" as UC7
+    usecase "Comparer les modèles" as UC8
+    usecase "Interpréter le modèle" as UC9
+    usecase "Sauvegarder le modèle" as UC10
+    usecase "Déployer l'application" as UC11
+
+    ' User
+    usecase "Saisir les caractéristiques\n du logement" as UC12
+    usecase "Estimer le prix" as UC13
+    usecase "Consulter le prix estimé" as UC14
+    usecase "Visualiser les résultats" as UC15
+}
+
+' =========================
+' Developer
+' =========================
+
+Dev --> UC1
+Dev --> UC2
+Dev --> UC3
+Dev --> UC4
+Dev --> UC5
+Dev --> UC6
+Dev --> UC7
+Dev --> UC8
+Dev --> UC9
+Dev --> UC10
+Dev --> UC11
+
+' =========================
+' User
+' =========================
+
+User --> UC12
+User --> UC13
+User --> UC14
+User --> UC15
+
+' =========================
+' Relationships
+' =========================
+
+UC13 ..> UC12 : <<include>>
+UC14 ..> UC13 : <<include>>
+UC15 ..> UC13 : <<include>>
+
+@enduml
