@@ -1,4 +1,5 @@
 import os
+import joblib
 import matplotlib.pyplot as plt
 from rich.console import Console
 import pandas as pd
@@ -121,7 +122,19 @@ def main():
     print(f"Best Score: {best_result['best_score']:.4f}")
     print(f"Best Parameters: {best_result['best_params']}")
 
+    #Sauvegarder le modèle avec joblib
 
+    best_model = best_result["best_model"]
+    # print(best_model)
+
+    try:
+        model_path = Path(__file__).parent
+        model_file = model_path / "models" / "house_price_model.joblib"
+        joblib.dump(best_model, model_file)
+        print(f"Le modèle entraîné a été sauvegardé avec succès dans le fichier '{model_file}'.")
+    except Exception as e:
+        print(f"Error saving the model: {e}")
+    
     conparaison_lm = linear_model.evaluate_model(X_test, y_test)
     comparaison_nlm = non_linear_model.evaluate_model(X_test, y_test)
     comparaison_rf = tree_model.evaluate_model(X_test, y_test)
@@ -208,5 +221,21 @@ def main():
 
     plt.tight_layout()
     plt.show()
+
+    print("\n" + "=" * 60)
+    print("         INTERPRETATION OF LINEAR MODEL          ")
+    linear_features = linear_model.pipeline.named_steps[
+        "preprocessor"
+    ].get_feature_names_out()
+    linear_model_coefs = linear_model.pipeline.named_steps["regressor"].coef_
+    
+    linear_importance = pd.DataFrame({
+        "Variable": linear_features,
+        "Coefficient": linear_model_coefs,
+    }).sort_values(by="Coefficient", key=abs, ascending=False)
+    
+    print(linear_importance)
+    print("=" * 60 + "\n")
+    
 if __name__ == "__main__":
     main()
