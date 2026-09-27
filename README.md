@@ -8,6 +8,14 @@ Estatia transforme un catalogue immobilier brut en estimation exploitable : nett
 	<strong>BRONZE</strong> &nbsp;→&nbsp; <strong>SILVER</strong> &nbsp;→&nbsp; <strong>GOLD</strong> &nbsp;→&nbsp; <strong>MODEL</strong> &nbsp;→&nbsp; <strong>ESTIMATION</strong>
 </p>
 
+<p align="center">
+	<img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python 3.11">
+	<img src="https://img.shields.io/badge/pandas-data%20processing-150458?logo=pandas&logoColor=white" alt="pandas">
+	<img src="https://img.shields.io/badge/scikit--learn-machine%20learning-F7931E?logo=scikit-learn&logoColor=white" alt="scikit-learn">
+	<img src="https://img.shields.io/badge/Streamlit-dashboard-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+	<img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white" alt="Docker Compose">
+</p>
+
 ---
 
 ## Le projet en un regard
